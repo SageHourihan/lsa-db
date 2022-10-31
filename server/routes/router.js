@@ -3,12 +3,13 @@ const route = express.Router()
 
 const services = require('../services/render');
 const controller = require('../controller/controller');
+const { requiresAuth } = require('express-openid-connect');
 
 /**
  *  @description Root Route
  *  @method GET /
  */
-route.get('/', services.homeRoutes);
+route.get('/', requiresAuth(), services.homeRoutes);
 
 /**
  *  @description add users
