@@ -3,12 +3,25 @@ const dotenv = require('dotenv');
 const morgan = require('morgan');
 const bodyparser = require("body-parser");
 const path = require('path');
+const { auth } = require('express-openid-connect');
+
+const config = {
+    authRequired: false,
+    auth0Logout: true,
+    secret: 'a long, randomly-generated string stored in env',
+    baseURL: 'http://localhost:8080',
+    clientID: '6hZk70Nnk8r8OnSshgTyh8WzZaVKVSyC',
+    issuerBaseURL: 'https://dev-dzv70nbk.us.auth0.com'
+};
 
 const connectDB = require('./server/database/connection');
 
 const app = express();
 
-dotenv.config( { path : 'config.env'} )
+// auth router attaches /login, /logout, and /callback routes to the baseURL
+app.use(auth(config));
+
+dotenv.config({ path: 'config.env' })
 const PORT = process.env.PORT || 8080
 
 // log requests
@@ -18,7 +31,7 @@ app.use(morgan('tiny'));
 connectDB();
 
 // parse request to body-parser
-app.use(bodyparser.urlencoded({ extended : true}))
+app.use(bodyparser.urlencoded({ extended: true }))
 
 // set view engine
 app.set("view engine", "ejs")
@@ -31,5 +44,8 @@ app.use('/js', express.static(path.resolve(__dirname, "assets/js")))
 
 // load routers
 app.use('/', require('./server/routes/router'))
+app.get('/', (req, res) => {
+    res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
+});
 
-app.listen(PORT, ()=> { console.log(`Server is running on http://localhost:${PORT}`)});
+app.listen(PORT, () => { console.log(`Server is running on http://localhost:${PORT}`) });
