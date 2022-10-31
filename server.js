@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const bodyparser = require("body-parser");
 const path = require('path');
 const { auth } = require('express-openid-connect');
+const { requiresAuth } = require('express-openid-connect');
 
 const config = {
     authRequired: false,
@@ -44,8 +45,13 @@ app.use('/js', express.static(path.resolve(__dirname, "assets/js")))
 
 // load routers
 app.use('/', require('./server/routes/router'))
+
 app.get('/', (req, res) => {
     res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
 });
 
+// ! testing for require auth. delete
+app.get('/profile', requiresAuth(), (req, res) => {
+    res.send(JSON.stringify(req.oidc.user));
+});
 app.listen(PORT, () => { console.log(`Server is running on http://localhost:${PORT}`) });
