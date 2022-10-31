@@ -50,8 +50,5 @@ app.get('/', (req, res) => {
     res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
 });
 
-// ! testing for require auth. delete
-app.get('/profile', requiresAuth(), (req, res) => {
-    res.send(JSON.stringify(req.oidc.user));
-});
+
 app.listen(PORT, () => { console.log(`Server is running on http://localhost:${PORT}`) });
