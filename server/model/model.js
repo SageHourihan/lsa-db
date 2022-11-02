@@ -14,7 +14,7 @@ var schema = new mongoose.Schema({
     water: String,
     area: Number,
     cardNumber: Number,
-    cardEnabled: Boolean,
+    cardEnabled: String,
     agreement: String,
     registration: String,
     wc1: String,
