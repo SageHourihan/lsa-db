@@ -14,8 +14,27 @@ exports.create = (req, res) => {
         address: req.body.address,
         dues: req.body.dues,
         status: req.body.status,
-        water: req.body.water
-        // TODO: Add area and cardNumber
+        water: req.body.water,
+        area: req.body.area,
+        cardNumber: req.body.cardNumber,
+        cardEnabled: req.body.cardEnabled,
+        agreement: req.body.agreement,
+        registration: req.body.registration,
+        wc1: req.body.wc1,
+        mc1Num: req.body.mc1Num,
+        mc1Color: req.body.mc1Color,
+        wc2: req.body.wc2,
+        mc2Num: req.body.mc2Num,
+        mc2Color: req.body.mc2Color,
+        wc3: req.body.wc3,
+        mc3Num: req.body.mc3Num,
+        mc3Color: req.body.mc3Color,
+        wc4: req.body.wc4,
+        mc4Num: req.body.mc4Num,
+        mc4Color: req.body.mc4Color,
+        wc5: req.body.wc5,
+        mc5Num: req.body.mc5Num,
+        mc5Color: req.body.mc5Color
     })
 
     // save user in the database
