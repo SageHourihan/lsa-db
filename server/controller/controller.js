@@ -23,18 +23,18 @@ exports.create = (req, res) => {
         wc1: req.body.wc1,
         mc1Num: req.body.mcNum1,
         mc1Color: req.body.mc1Color,
-        wc2: req.body.wc1,
-        mc2Num: req.body.mcNum1,
-        mc2Color: req.body.mc1Color,
-        wc3: req.body.wc1,
-        mc3Num: req.body.mcNum1,
-        mc3Color: req.body.mc1Color,
-        wc4: req.body.wc1,
-        mc4Num: req.body.mcNum1,
-        mc4Color: req.body.mc1Color,
-        wc5: req.body.wc1,
-        mc5Num: req.body.mcNum1,
-        mc5Color: req.body.mc1Color
+        wc2: req.body.wc2,
+        mc2Num: req.body.mcNum2,
+        mc2Color: req.body.mc2Color,
+        wc3: req.body.wc3,
+        mc3Num: req.body.mcNum3,
+        mc3Color: req.body.mc3Color,
+        wc4: req.body.wc4,
+        mc4Num: req.body.mcNum4,
+        mc4Color: req.body.mc4Color,
+        wc5: req.body.wc5,
+        mc5Num: req.body.mcNum5,
+        mc5Color: req.body.mc5Color
     })
 
     // save user in the database
