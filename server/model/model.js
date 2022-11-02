@@ -13,7 +13,25 @@ var schema = new mongoose.Schema({
     status: String,
     water: String,
     area: Number,
-    cardNumber: Number
+    cardNumber: Number,
+    cardEnabled: Boolean,
+    agreement: String,
+    registration: String,
+    wc1: String,
+    mc1Num: String,
+    mc1Color: String,
+    wc2: String,
+    mc2Num: String,
+    mc2Color: String,
+    wc3: String,
+    mc3Num: String,
+    mc3Color: String,
+    wc4: String,
+    mc4Num: String,
+    mc4Color: String,
+    wc5: String,
+    mc5Num: String,
+    mc5Color: String
 })
 
 const Userdb = mongoose.model('userdb', schema);
