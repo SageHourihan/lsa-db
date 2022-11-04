@@ -1,4 +1,4 @@
-# fly.toml file generated for lsa-db on 2022-11-04T10:00:10-04:00
+# fly.toml file generated for lsa-db on 2022-11-04T17:51:59-04:00
 
 app = "lsa-db"
 kill_signal = "SIGINT"
@@ -6,7 +6,6 @@ kill_timeout = 5
 processes = []
 
 [env]
-  PORT = "8080"
 
 [experimental]
   allowed_public_ports = []
