@@ -6,7 +6,7 @@ kill_timeout = 5
 processes = []
 
 [env]
-  PORT = "5006"
+  PORT = "8080"
 
 [experimental]
   allowed_public_ports = []
@@ -14,9 +14,9 @@ processes = []
 
 [[services]]
   http_checks = []
-  internal_port = 5006
+  internal_port = 8080
   processes = ["app"]
-  protocol = "tcp"
+  protocol = "http"
   script_checks = []
   [services.concurrency]
     hard_limit = 25
