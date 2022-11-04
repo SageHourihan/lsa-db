@@ -10,7 +10,7 @@ const config = {
     authRequired: false,
     auth0Logout: true,
     secret: 'a long, randomly-generated string stored in env',
-    baseURL: 'http://lsa-db.fly.dev',
+    baseURL: 'https://lsa-db.fly.dev',
     clientID: '6hZk70Nnk8r8OnSshgTyh8WzZaVKVSyC',
     issuerBaseURL: 'https://dev-dzv70nbk.us.auth0.com'
 };
