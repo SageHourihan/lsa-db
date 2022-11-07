@@ -6,7 +6,11 @@
 $(document).ready( function () {
     $('#myTable').DataTable({
         dom: 'Blfrtip',
-        buttons: ['csv']
+        buttons: {
+        buttons: [
+            { extend: 'csv', className: 'csvButton' }
+        ]
+    }
     });} )
 </script>
 </body>
