@@ -1,4 +1,6 @@
 var Userdb = require('../model/model');
+var XLSX = require('xlsx');
+var path = require('path');
 
 // create and save new user
 exports.create = (req, res) => {
@@ -124,4 +126,21 @@ exports.delete = (req, res) => {
                 message: "Could not delete User with id=" + id
             });
         });
+}
+
+exports.export_db = (req, res) => {
+    var wb = XLSX.utils.book_new();
+    Userdb.find((err, data) => {
+        if (err) {
+            console.log(err)
+        } else {
+            var temp = JSON.stringify(data);
+            temp = JSON.parse(temp);
+            var ws = XLSX.utils.json_to_sheet(temp);
+            var down = __dirname + '/exportdata.xlsx'
+            XLSX.utils.book_append_sheet(wb, ws, "sheet1");
+            XLSX.writeFile(wb, down);
+            res.download(down);
+        }
+    })
 }
