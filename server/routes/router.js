@@ -23,12 +23,6 @@ route.get('/add-user', requiresAuth(), services.add_user)
  */
 route.get('/update-user', requiresAuth(), services.update_user)
 
-/**
- * @description export db
- * @method GET /export
- */
-route.get('/export', controller.export_db)
-
 // API
 route.post('/api/users', controller.create);
 route.get('/api/users', controller.find);
