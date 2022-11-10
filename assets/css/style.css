@@ -262,6 +262,14 @@ table {
     padding-top: 5px;
 }
 
+.dataTables_filter {
+    margin-bottom: 3px;
+}
+
 .dataTables_length {
-    margin-top: 5px;
+    margin-top: 3px;
+}
+
+.right {
+    float: right;
 }
