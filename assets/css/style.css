@@ -46,6 +46,12 @@ a {
     box-shadow: 1px 3px 10px #e9ecef;
 }
 
+.border-round {
+    border: .1px solid var(--border-btn);
+    border-radius: 10px;
+    box-shadow: 1px 3px 10px #e9ecef;
+}
+
 .text-dark {
     color: var(--dark);
 }
@@ -272,4 +278,8 @@ table {
 
 .right {
     float: right;
+}
+
+#fileName {
+    padding-left: 10px;
 }

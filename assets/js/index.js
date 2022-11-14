@@ -55,7 +55,7 @@ $("#customImport").click(function () {
 $("#real-import").change(function () {
     $fname = $('input[type=file]').val().replace(/.*(\/|\\)/, '');
     // alert($fname)
-    $("#fileName").replaceWith($fname)
+    $("#fileName").html($fname)
     $("#fileName").removeAttr("hidden")
     $("#customSubmit").removeAttr("hidden")
 })
