@@ -105,6 +105,8 @@ dist
 
 .DS_Store
 
+#env file
 config.env
 
-requests.rest
+# Excel files
+.xlsx
