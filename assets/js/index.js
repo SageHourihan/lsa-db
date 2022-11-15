@@ -17,7 +17,7 @@ $("#update_user").submit(function (event) {
 
 
     var request = {
-        "url": `http://localhost:8080/api/users/${data.id}`,
+        "url": `https://dev-lsa-db.fly.dev/api/users/${data.id}`,
         "method": "PUT",
         "data": data
     }
@@ -34,7 +34,7 @@ if (window.location.pathname == "/") {
         var id = $(this).attr("data-id")
 
         var request = {
-            "url": `http://localhost:8080/api/users/${id}`,
+            "url": `https://dev-lsa-db.fly.dev/api/users/${id}`,
             "method": "DELETE"
         }
 
