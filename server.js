@@ -5,6 +5,9 @@ const bodyparser = require("body-parser");
 const path = require('path');
 const { auth } = require('express-openid-connect');
 const { requiresAuth } = require('express-openid-connect');
+var XLSX = require('xlsx');
+var multer = require('multer');
+var Userdb = require('./server/model/model');
 
 const config = {
     authRequired: false,
@@ -50,5 +53,33 @@ app.get('/', (req, res) => {
     res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
 });
 
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './public/uploads')
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname)
+    }
+});
+
+var upload = multer({ storage: storage });
+
+app.post('/import', upload.single('excel'), (req, res) => {
+    var workbook = XLSX.readFile(req.file.path);
+    var sheet_namelist = workbook.SheetNames;
+    var x = 0;
+    sheet_namelist.forEach(element => {
+        var xlData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_namelist[x]]);
+        Userdb.insertMany(xlData, (err, data) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log(data);
+            }
+        })
+        x++;
+    });
+    res.redirect('/');
+});
 
 app.listen(PORT, () => { console.log(`Server is running on http://localhost:${PORT}`) });

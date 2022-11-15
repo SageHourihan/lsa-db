@@ -47,3 +47,19 @@ if (window.location.pathname == "/") {
 
     })
 }
+
+$("#customImport").click(function () {
+    $("#real-import").click()
+})
+
+$("#real-import").change(function () {
+    $fname = $('input[type=file]').val().replace(/.*(\/|\\)/, '');
+    // alert($fname)
+    $("#fileName").html($fname)
+    $("#fileName").removeAttr("hidden")
+    $("#customSubmit").removeAttr("hidden")
+})
+
+$("#customSubmit").click(function () {
+    $("#real-submit").click()
+})
