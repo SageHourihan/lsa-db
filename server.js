@@ -70,14 +70,17 @@ app.post('/import', upload.single('excel'), (req, res) => {
     var x = 0;
     sheet_namelist.forEach(element => {
         var xlData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_namelist[x]]);
-        Userdb.insertMany(xlData, (err, data) => {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log(data);
-            }
-        })
-        x++;
+        let xl = JSON.stringify(xlData).toString().replace('[', '').replace(']', '')
+        let xlD = JSON.parse(xl)
+        console.log(xlD["name"])
+        //     Userdb.insertMany(xlData, (err, data) => {
+        //         if (err) {
+        //             console.log(err);
+        //         } else {
+        //             console.log(data);
+        //         }
+        //     })
+        //     x++;
     });
     res.redirect('/');
 });
