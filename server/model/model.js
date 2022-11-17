@@ -31,7 +31,8 @@ var schema = new mongoose.Schema({
     mc4Color: String,
     wc5: String,
     mc5Num: String,
-    mc5Color: String
+    mc5Color: String,
+    __v: { type: Number, select: false }
 })
 
 const Userdb = mongoose.model('userdb', schema);
