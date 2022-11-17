@@ -72,15 +72,33 @@ app.post('/import', upload.single('excel'), (req, res) => {
         var xlData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_namelist[x]]);
         let xl = JSON.stringify(xlData).toString().replace('[', '').replace(']', '')
         let xlD = JSON.parse(xl)
-        console.log(xlD["name"])
-        //     Userdb.insertMany(xlData, (err, data) => {
-        //         if (err) {
-        //             console.log(err);
-        //         } else {
-        //             console.log(data);
-        //         }
-        //     })
-        //     x++;
+        console.log(xlD)
+        //!DELETE console.log(xlD["name"])
+        Userdb.updateMany(
+            { _id: xlD["_id"] },
+            {
+                $set: {
+                    name: xlD["name"],
+                    dues: xlD["dues"]
+                }
+            },
+            { upsert: true },
+            (err, data) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log(data);
+                }
+            })
+        x++;
+        // Userdb.insertMany(xlData, (err, data) => {
+        //     if (err) {
+        //         console.log(err);
+        //     } else {
+        //         console.log(data);
+        //     }
+        // })
+        // x++;
     });
     res.redirect('/');
 });
