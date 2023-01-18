@@ -70,14 +70,48 @@ app.post('/import', upload.single('excel'), (req, res) => {
     var x = 0;
     sheet_namelist.forEach(element => {
         var xlData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_namelist[x]]);
-        Userdb.insertMany(xlData, (err, data) => {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log(data);
-            }
+        xlData.forEach(xlD => {
+            Userdb.updateMany(
+                { name: xlD["name"] },
+                {
+                    $set: {
+                        name: xlD["name"],
+                        address: xlD["address"],
+                        dues: xlD["dues"],
+                        status: xlD["status"],
+                        water: xlD["water"],
+                        area: xlD["area"],
+                        cardNumber: xlD["cardNumber"],
+                        cardEnabled: xlD["cardEnabled"],
+                        agreement: xlD["agreement"],
+                        registration: xlD["registration"],
+                        wc1: xlD["wc1"],
+                        mc1Num: xlD["mc1Num"],
+                        mc1Color: xlD["mc1Color"],
+                        wc2: xlD["wc2"],
+                        mc2Num: xlD["mc2Num"],
+                        mc2Color: xlD["mc2Color"],
+                        wc3: xlD["wc3"],
+                        mc3Num: xlD["mc3Num"],
+                        mc3Color: xlD["mc3Color"],
+                        wc4: xlD["wc4"],
+                        mc4Num: xlD["mc4Num"],
+                        mc4Color: xlD["mc4Color"],
+                        wc5: xlD["wc5"],
+                        mc5Num: xlD["mc5Num"],
+                        mc5Color: xlD["mc5Color"],
+                    }
+                },
+                { upsert: true },
+                (err, data) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log(data);
+                    }
+                })
+            x++;
         })
-        x++;
     });
     res.redirect('/');
 });
