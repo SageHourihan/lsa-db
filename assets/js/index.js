@@ -17,7 +17,11 @@ $("#update_user").submit(function (event) {
 
 
     var request = {
+<<<<<<< HEAD
         "url": `https://test-lsa-db.fly.dev/api/users/${data.id}`,
+=======
+        "url": `http://localhost:8080/api/users/${data.id}`,
+>>>>>>> dev
         "method": "PUT",
         "data": data
     }
@@ -34,7 +38,11 @@ if (window.location.pathname == "/") {
         var id = $(this).attr("data-id")
 
         var request = {
+<<<<<<< HEAD
             "url": `https://test-lsa-db.fly.dev/api/users/${id}`,
+=======
+            "url": `http://localhost:8080/api/users/${id}`,
+>>>>>>> dev
             "method": "DELETE"
         }
 

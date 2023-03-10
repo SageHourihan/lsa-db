@@ -13,7 +13,11 @@ const config = {
     authRequired: false,
     auth0Logout: true,
     secret: 'a long, randomly-generated string stored in env',
+<<<<<<< HEAD
     baseURL: 'https://test-lsa-db.fly.dev',
+=======
+    baseURL: 'http://localhost:8080',
+>>>>>>> dev
     clientID: '6hZk70Nnk8r8OnSshgTyh8WzZaVKVSyC',
     issuerBaseURL: 'https://dev-dzv70nbk.us.auth0.com'
 };
