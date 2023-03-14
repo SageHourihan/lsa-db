@@ -130,141 +130,40 @@
             style="width: 30%"
           />
         </div>
-
+        <%for(var i=0; i < user.boats.length; i++) { %>
         <div class="form-group">
-          <label for="wc1" class="text-light">Water Craft 1</label>
+          <label for="wc <%= i+1 %>" class="text-light"
+            >Water Craft <%= i+1 %></label
+          >
           <input
             type="text"
-            name="wc1"
+            name="wc <%= i+1 %>"
             placeholder="Pontoon"
             style="width: 16.5%"
-            value="<%= user.boats[0].boat%>"
+            value="<%= user.boats[i].boat%>"
           />
-          <label for="mc1Num" class="text-light">MC Number</label>
+          <label for="mc<%= i+1 %>Num" class="text-light"
+            >MC Number <%= i+1 %></label
+          >
           <input
             type="text"
-            name="mc1Num"
-            placeholder="1234 ZZ"
+            name="mc<%= i+1 %>Num"
+            placeholder="123ABC"
             style="width: 16.5%"
-            value="<%= user.boats[0].mc%>"
+            value="<%= user.boats[i].mc%>"
           />
-          <label for="mc1Color" class="text-light">MC Color</label>
+          <label for="mc<%= i+1 %>Color" class="text-light"
+            >MC <%= i+1 %> Color</label
+          >
           <input
             type="text"
-            name="mc1Color"
+            name="mc<%= i+1 %>Color"
             placeholder="Red"
             style="width: 16.5%"
-            value="<%= user.boats[0].color%>"
+            value="<%= user.boats[i].color%>"
           />
         </div>
-
-        <div class="form-group">
-          <label for="wc2" class="text-light">Water Craft 2</label>
-          <input
-            type="text"
-            name="wc2"
-            placeholder="Pontoon"
-            style="width: 16.5%"
-            value="<%= user.boats[1].boat%>"
-          />
-          <label for="mc2Num" class="text-light">MC Number</label>
-          <input
-            type="text"
-            name="mc2Num"
-            placeholder="1234 ZZ"
-            style="width: 16.5%"
-            value="<%= user.boats[1].mc%>"
-          />
-          <label for="mc1Color" class="text-light">MC Color</label>
-          <input
-            type="text"
-            name="mc2Color"
-            placeholder="Red"
-            style="width: 16.5%"
-            value="<%= user.boats[1].color%>"
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="wc3" class="text-light">Water Craft 3</label>
-          <input
-            type="text"
-            name="wc3"
-            placeholder="Pontoon"
-            style="width: 16.5%"
-            value="<%= user.wc3%>"
-          />
-          <label for="mc3Num" class="text-light">MC Number</label>
-          <input
-            type="text"
-            name="mc3Num"
-            placeholder="1234 ZZ"
-            style="width: 16.5%"
-            value="<%= user.mc3Num%>"
-          />
-          <label for="mc3Color" class="text-light">MC Color</label>
-          <input
-            type="text"
-            name="mc3Color"
-            placeholder="Red"
-            style="width: 16.5%"
-            value="<%= user.mc3Color%>"
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="wc4" class="text-light">Water Craft 4</label>
-          <input
-            type="text"
-            name="wc4"
-            placeholder="Pontoon"
-            style="width: 16.5%"
-            value="<%= user.wc4%>"
-          />
-          <label for="mc4Num" class="text-light">MC Number</label>
-          <input
-            type="text"
-            name="mc4Num"
-            placeholder="1234 ZZ"
-            style="width: 16.5%"
-            value="<%= user.mc4Num%>"
-          />
-          <label for="mc4Color" class="text-light">MC Color</label>
-          <input
-            type="text"
-            name="mc4Color"
-            placeholder="Red"
-            style="width: 16.5%"
-            value="<%= user.mc4Color%>"
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="wc5" class="text-light">Water Craft 5</label>
-          <input
-            type="text"
-            name="wc5"
-            placeholder="Pontoon"
-            style="width: 16.5%"
-            value="<%= user.wc5%>"
-          />
-          <label for="mc5Num" class="text-light">MC Number</label>
-          <input
-            type="text"
-            name="mc5Num"
-            placeholder="1234 ZZ"
-            style="width: 16.5%"
-            value="<%= user.mc5Num%>"
-          />
-          <label for="mc5Color" class="text-light">MC Color</label>
-          <input
-            type="text"
-            name="mc5Color"
-            placeholder="Red"
-            style="width: 16.5%"
-            value="<%= user.mc5Color%>"
-          />
-        </div>
+        <% } %>
 
         <div class="form-group">
           <button type="submit" class="btn text-dark update">Save</button>
