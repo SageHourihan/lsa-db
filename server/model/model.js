@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+// !old schema
 // var schema = new mongoose.Schema({
 //     name: {
 //         type: String,
@@ -42,7 +43,15 @@ var schema = new mongoose.Schema({
         mc: String,
         make: String,
         color: String
-    }]
+    }],
+    dues: String,
+    status: String,
+    water: String,
+    area: Number,
+    cardNumber: Number,
+    cardEnabled: String,
+    agreement: String,
+    registration: String
 })
 
 const Userdb = mongoose.model('userdb', schema, 'test');
