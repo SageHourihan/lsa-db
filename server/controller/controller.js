@@ -41,6 +41,13 @@ exports.create = (req, res) => {
     const user = new Userdb({
         name: req.body.name,
         address: req.body.name,
+        status: req.body.status,
+        water: req.body.water,
+        area: req.body.area,
+        cardNumber: req.body.cardNumber,
+        cardEnabled: req.body.cardEnabled,
+        agreement: req.body.agreement,
+        registration: req.body.registration,
         boats: [
             {
                 boat: req.body.wc1
