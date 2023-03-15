@@ -163,12 +163,11 @@ exports.export_db = async (req, res) => {
         return modifiedDoc;
     });
 
-
     const worksheet = XLSX.utils.json_to_sheet(stringData); // Convert data to a worksheet
     const workbook = XLSX.utils.book_new(); // Create a new workbook
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1'); // Add the worksheet to the workbook
 
-    const filePath = './myFile.xlsx'; // Replace with your own file path
+    const filePath = './tmp/export.xlsx'; // Replace with your own file path
     XLSX.writeFile(workbook, filePath); // Write the workbook to an Excel file
     res.download(filePath);
     console.log(`Exported data to ${filePath}`);

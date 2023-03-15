@@ -110,3 +110,6 @@ config.env
 
 # Excel files
 .xlsx
+
+# tmp folder
+tmp
