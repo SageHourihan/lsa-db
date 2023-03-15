@@ -1,6 +1,8 @@
 var Userdb = require('../model/model');
 var XLSX = require('xlsx');
 var path = require('path');
+var fs = require('fs');
+const connectDb = require('../database/connection')
 
 // create and save new user
 exports.create = (req, res) => {
@@ -144,19 +146,31 @@ exports.delete = (req, res) => {
         });
 }
 
-exports.export_db = (req, res) => {
-    var wb = XLSX.utils.book_new();
-    Userdb.find((err, data) => {
-        if (err) {
-            console.log(err)
-        } else {
-            var temp = JSON.stringify(data);
-            temp = JSON.parse(temp);
-            var ws = XLSX.utils.json_to_sheet(temp);
-            var down = __dirname + '/exportdata.xlsx'
-            XLSX.utils.book_append_sheet(wb, ws, "sheet1");
-            XLSX.writeFile(wb, down);
-            res.download(down);
+exports.export_db = async (req, res) => {
+    const data = await Userdb.find().lean();
+    // Convert arrays in documents to strings before writing to Excel file
+    const stringData = data.map(doc => {
+        const modifiedDoc = {};
+        for (const key in doc) {
+            if (key === '_id') {
+                modifiedDoc._id = doc._id.toString();
+            } else if (Array.isArray(doc[key])) {
+                modifiedDoc[key] = doc[key].map(value => JSON.stringify(value)).join(', ');
+            } else {
+                modifiedDoc[key] = doc[key];
+            }
         }
-    })
+        return modifiedDoc;
+    });
+
+
+    const worksheet = XLSX.utils.json_to_sheet(stringData); // Convert data to a worksheet
+    const workbook = XLSX.utils.book_new(); // Create a new workbook
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1'); // Add the worksheet to the workbook
+
+    const filePath = './myFile.xlsx'; // Replace with your own file path
+    XLSX.writeFile(workbook, filePath); // Write the workbook to an Excel file
+    res.download(filePath);
+    console.log(`Exported data to ${filePath}`);
+
 }
