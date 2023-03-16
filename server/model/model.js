@@ -41,7 +41,7 @@ var schema = new mongoose.Schema({
     address: String,
     boats: [{
         mc: String,
-        make: String,
+        boat: String,
         color: String
     }],
     dues: String,
