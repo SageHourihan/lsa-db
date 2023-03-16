@@ -64,36 +64,26 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage });
 
+// Handle POST request to /import route with upload of single 'excel' file
 app.post('/import', upload.single('excel'), (req, res) => {
     // Read the uploaded Excel file
     var workbook = XLSX.readFile(req.file.path);
-    // Get the names of all sheets in the workbook
     var sheet_namelist = workbook.SheetNames;
     var x = 0;
 
-    // Iterate over each sheet in the workbook
+    // Iterate over all sheets in the workbook
     sheet_namelist.forEach(element => {
-        // Convert the sheet to a JSON object
+        // Parse sheet data into JSON format
         var xlData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_namelist[x]]);
-        // Iterate over each row in the sheet
         xlData.forEach(xlD => {
-            // Extract the boats information from the "boats" column
-            const boatsString = xlD["boats"];
-            const boats = boatsString.split(',').map(boatString => {
-                if (!boatString) return null; // Ignore empty boat entries
-                // Parse each boat entry as a JSON object
-                const boat = JSON.parse('{' + boatString + '}');
-                // Return the boat object with the keys renamed to match the Userdb schema
-                return {
-                    mc: boat.mc,
-                    boat: boat.boat,
-                    color: boat.color
-                };
-            }).filter(Boolean); // Filter out null values
+            // Parse the boats field (in JSON string format) into a boats array
+            const boats = JSON.parse(xlD["boats"]);
 
-            // Update the matching Userdb documents with the extracted data
+            // Update the Userdb database with new data
             Userdb.updateMany(
-                { name: xlD["name"] },
+                // Find the document with the matching _id field
+                { _id: xlD["_id"] },
+                // Update document fields as necessary
                 {
                     $set: {
                         address: xlD["address"],
@@ -106,10 +96,12 @@ app.post('/import', upload.single('excel'), (req, res) => {
                         agreement: xlD["agreement"],
                         registration: xlD["registration"],
                     },
+                    // Add boats to the boats array
                     $push: {
                         boats: { $each: boats }
                     }
                 },
+                // If no matching document is found, create a new one
                 { upsert: true },
                 (err, data) => {
                     if (err) {
@@ -123,8 +115,10 @@ app.post('/import', upload.single('excel'), (req, res) => {
         x++;
     });
 
+    // Redirect to home page after import is complete
     res.redirect('/');
 });
+
 
 
 app.listen(PORT, () => { console.log(`Server is running on http://localhost:${PORT}`) });
