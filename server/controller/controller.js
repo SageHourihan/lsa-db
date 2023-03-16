@@ -155,7 +155,7 @@ exports.export_db = async (req, res) => {
             if (key === '_id') {
                 modifiedDoc._id = doc._id.toString();
             } else if (Array.isArray(doc[key])) {
-                modifiedDoc[key] = doc[key].map(value => JSON.stringify(value)).join(', ');
+                modifiedDoc[key] = JSON.stringify(doc[key]);
             } else {
                 modifiedDoc[key] = doc[key];
             }
