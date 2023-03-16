@@ -64,25 +64,30 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage });
 
-// Handle POST request to /import route with upload of single 'excel' file
 app.post('/import', upload.single('excel'), (req, res) => {
     // Read the uploaded Excel file
     var workbook = XLSX.readFile(req.file.path);
+
+    // Get an array of sheet names in the workbook
     var sheet_namelist = workbook.SheetNames;
+
+    // Set up a counter variable for iterating over the sheet names array
     var x = 0;
 
     // Iterate over all sheets in the workbook
     sheet_namelist.forEach(element => {
         // Parse sheet data into JSON format
         var xlData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_namelist[x]]);
+
+        // Iterate over all rows in the sheet data
         xlData.forEach(xlD => {
             // Parse the boats field (in JSON string format) into a boats array
             const boats = JSON.parse(xlD["boats"]);
 
             // Update the Userdb database with new data
-            Userdb.updateMany(
-                // Find the document with the matching _id field
-                { _id: xlD["_id"] },
+            Userdb.updateOne(
+                // Find the document with the matching name field
+                { name: xlD["name"] },
                 // Update document fields as necessary
                 {
                     $set: {
@@ -95,11 +100,8 @@ app.post('/import', upload.single('excel'), (req, res) => {
                         cardEnabled: xlD["cardEnabled"],
                         agreement: xlD["agreement"],
                         registration: xlD["registration"],
+                        boats: boats
                     },
-                    // Add boats to the boats array
-                    $push: {
-                        boats: { $each: boats }
-                    }
                 },
                 // If no matching document is found, create a new one
                 { upsert: true },
@@ -112,13 +114,14 @@ app.post('/import', upload.single('excel'), (req, res) => {
                 }
             );
         });
+
+        // Increment the sheet name counter variable
         x++;
     });
 
     // Redirect to home page after import is complete
     res.redirect('/');
 });
-
 
 
 app.listen(PORT, () => { console.log(`Server is running on http://localhost:${PORT}`) });
