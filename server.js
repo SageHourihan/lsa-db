@@ -65,17 +65,37 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 app.post('/import', upload.single('excel'), (req, res) => {
+    // Read the uploaded Excel file
     var workbook = XLSX.readFile(req.file.path);
+    // Get the names of all sheets in the workbook
     var sheet_namelist = workbook.SheetNames;
     var x = 0;
+
+    // Iterate over each sheet in the workbook
     sheet_namelist.forEach(element => {
+        // Convert the sheet to a JSON object
         var xlData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_namelist[x]]);
+        // Iterate over each row in the sheet
         xlData.forEach(xlD => {
+            // Extract the boats information from the "boats" column
+            const boatsString = xlD["boats"];
+            const boats = boatsString.split(',').map(boatString => {
+                if (!boatString) return null; // Ignore empty boat entries
+                // Parse each boat entry as a JSON object
+                const boat = JSON.parse('{' + boatString + '}');
+                // Return the boat object with the keys renamed to match the Userdb schema
+                return {
+                    mc: boat.mc,
+                    boat: boat.boat,
+                    color: boat.color
+                };
+            }).filter(Boolean); // Filter out null values
+
+            // Update the matching Userdb documents with the extracted data
             Userdb.updateMany(
                 { name: xlD["name"] },
                 {
                     $set: {
-                        name: xlD["name"],
                         address: xlD["address"],
                         dues: xlD["dues"],
                         status: xlD["status"],
@@ -85,21 +105,9 @@ app.post('/import', upload.single('excel'), (req, res) => {
                         cardEnabled: xlD["cardEnabled"],
                         agreement: xlD["agreement"],
                         registration: xlD["registration"],
-                        wc1: xlD["wc1"],
-                        mc1Num: xlD["mc1Num"],
-                        mc1Color: xlD["mc1Color"],
-                        wc2: xlD["wc2"],
-                        mc2Num: xlD["mc2Num"],
-                        mc2Color: xlD["mc2Color"],
-                        wc3: xlD["wc3"],
-                        mc3Num: xlD["mc3Num"],
-                        mc3Color: xlD["mc3Color"],
-                        wc4: xlD["wc4"],
-                        mc4Num: xlD["mc4Num"],
-                        mc4Color: xlD["mc4Color"],
-                        wc5: xlD["wc5"],
-                        mc5Num: xlD["mc5Num"],
-                        mc5Color: xlD["mc5Color"],
+                    },
+                    $push: {
+                        boats: { $each: boats }
                     }
                 },
                 { upsert: true },
@@ -109,11 +117,14 @@ app.post('/import', upload.single('excel'), (req, res) => {
                     } else {
                         console.log(data);
                     }
-                })
-            x++;
-        })
+                }
+            );
+        });
+        x++;
     });
+
     res.redirect('/');
 });
+
 
 app.listen(PORT, () => { console.log(`Server is running on http://localhost:${PORT}`) });
