@@ -65,17 +65,32 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 app.post('/import', upload.single('excel'), (req, res) => {
+    // Read the uploaded Excel file
     var workbook = XLSX.readFile(req.file.path);
+
+    // Get an array of sheet names in the workbook
     var sheet_namelist = workbook.SheetNames;
+
+    // Set up a counter variable for iterating over the sheet names array
     var x = 0;
+
+    // Iterate over all sheets in the workbook
     sheet_namelist.forEach(element => {
+        // Parse sheet data into JSON format
         var xlData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_namelist[x]]);
+
+        // Iterate over all rows in the sheet data
         xlData.forEach(xlD => {
-            Userdb.updateMany(
+            // Parse the boats field (in JSON string format) into a boats array
+            const boats = JSON.parse(xlD["boats"]);
+
+            // Update the Userdb database with new data
+            Userdb.updateOne(
+                // Find the document with the matching name field
                 { name: xlD["name"] },
+                // Update document fields as necessary
                 {
                     $set: {
-                        name: xlD["name"],
                         address: xlD["address"],
                         dues: xlD["dues"],
                         status: xlD["status"],
@@ -85,23 +100,10 @@ app.post('/import', upload.single('excel'), (req, res) => {
                         cardEnabled: xlD["cardEnabled"],
                         agreement: xlD["agreement"],
                         registration: xlD["registration"],
-                        wc1: xlD["wc1"],
-                        mc1Num: xlD["mc1Num"],
-                        mc1Color: xlD["mc1Color"],
-                        wc2: xlD["wc2"],
-                        mc2Num: xlD["mc2Num"],
-                        mc2Color: xlD["mc2Color"],
-                        wc3: xlD["wc3"],
-                        mc3Num: xlD["mc3Num"],
-                        mc3Color: xlD["mc3Color"],
-                        wc4: xlD["wc4"],
-                        mc4Num: xlD["mc4Num"],
-                        mc4Color: xlD["mc4Color"],
-                        wc5: xlD["wc5"],
-                        mc5Num: xlD["mc5Num"],
-                        mc5Color: xlD["mc5Color"],
-                    }
+                        boats: boats
+                    },
                 },
+                // If no matching document is found, create a new one
                 { upsert: true },
                 (err, data) => {
                     if (err) {
@@ -109,11 +111,17 @@ app.post('/import', upload.single('excel'), (req, res) => {
                     } else {
                         console.log(data);
                     }
-                })
-            x++;
-        })
+                }
+            );
+        });
+
+        // Increment the sheet name counter variable
+        x++;
     });
+
+    // Redirect to home page after import is complete
     res.redirect('/');
 });
+
 
 app.listen(PORT, () => { console.log(`Server is running on http://localhost:${PORT}`) });

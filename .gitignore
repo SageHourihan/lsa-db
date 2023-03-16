@@ -113,3 +113,6 @@ config.env
 
 # tmp folder
 tmp
+
+# public folder
+public
